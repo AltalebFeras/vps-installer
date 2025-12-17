@@ -352,6 +352,14 @@ function previewModules() {
   if (!ensureModulesLoaded()) return;
 
   const selected = getSelectedModules();
+
+  // NEW: require at least one selected module
+  if (!hasAnyModuleSelected(selected)) {
+    clearValidationUI();
+    showValidationError("Veuillez sélectionner au moins un module.", []);
+    return;
+  }
+
   if (!validateBeforeGenerate(selected)) return;
 
   const script = generateScript({ forceAllModules: false });
@@ -508,6 +516,19 @@ document.addEventListener("DOMContentLoaded", async () => {
   ];
   for (const id of watched) on($id(id), "input", clearValidationUI);
 
+  // NEW: clear validation error when toggling module selection
+  const moduleCheckboxIds = [
+    "moduleSystem",
+    "moduleApache",
+    "moduleFirewall",
+    "moduleSftp",
+    "modulePhp",
+    "moduleComposer",
+    "moduleMariadb",
+    "modulePhpmyadmin",
+  ];
+  for (const id of moduleCheckboxIds) on($id(id), "change", clearValidationUI);
+
   // Counters (SFTP only)
   setupCharCounter("sftpUser", "sftpUserCounter", 8);
   setupCharCounter("sftpPass", "sftpPassCounter", 8);
@@ -552,4 +573,9 @@ function setupPasswordToggles() {
       btn.setAttribute("aria-label", isHidden ? "Masquer le mot de passe" : "Afficher le mot de passe");
     });
   });
+}
+
+// NEW: helper to detect if **at least one module** is selected
+function hasAnyModuleSelected(modules) {
+  return Object.values(modules).some(Boolean);
 }
