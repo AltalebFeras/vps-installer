@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🚀 Générateur de Script VPS</title>
+    <link rel="icon" href="data:,">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 Générateur de Script d'Installation VPS</h1>
+            <p class="subtitle">Configurez votre serveur en quelques clics</p>
+        </header>
+
+        <div class="form-container">
+            <!-- was: <form id="configForm" ...> -->
+            <div id="configForm" class="config-form" autocomplete="on">
+                <!-- Section Variables -->
+                <section class="section">
+                    <h2>📝 Variables de Configuration</h2>
+                    
+                    <!-- Configuration Générale -->
+                    <div class="config-group highlighted">
+                        <h3 class="group-title">🌐 Configuration Générale</h3>
+                        <div class="form-grid single-column">
+                            <div class="form-group">
+                                <label for="sftpSite">🌐 Nom du site / Projet</label>
+                                <input type="text" id="sftpSite" value="" placeholder="Ex: monsite, myblog, project">
+                                <small class="input-hint">Ce nom sera utilisé pour créer les dossiers du projet</small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Groupe SFTP (sub-form to avoid "multiple credential sets in one form") -->
+                    <form id="sftpForm" class="subform" autocomplete="on" novalidate>
+                        <div class="config-group">
+                            <h3 class="group-title">🔐 Configuration SFTP</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="sftpUser">👤 Utilisateur SFTP</label>
+                                    <input type="text" id="sftpUser" value="" placeholder="Ex: sftp-user-root" autocomplete="section-sftp username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sftpPass">🔑 Mot de passe SFTP</label>
+                                    <input type="password" id="sftpPass" value="" placeholder="Mot de passe sécurisé" autocomplete="section-sftp new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="sftpGroup">👥 Groupe SFTP</label>
+                                    <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+
+                    <!-- Groupe MySQL (sub-form) -->
+                    <form id="mysqlForm" class="subform" autocomplete="on" novalidate>
+                        <div class="config-group">
+                            <h3 class="group-title">💾 Configuration MySQL/MariaDB</h3>
+                            <div class="form-grid">
+                                <div class="form-group">
+                                    <label for="mysqlUser">👤 Utilisateur MySQL</label>
+                                    <input type="text" id="mysqlUser" value="" placeholder="Ex: dbuser ou admin_db" autocomplete="section-mysql username">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mysqlPass">🔐 Mot de passe MySQL</label>
+                                    <input type="password" id="mysqlPass" value="" placeholder="Mot de passe fort" autocomplete="section-mysql new-password">
+                                </div>
+                                <div class="form-group">
+                                    <label for="mysqlDb">🗄️ Nom de la base de données</label>
+                                    <input type="text" id="mysqlDb" value="" placeholder="Ex: ma_base ou mydb">
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </section>
+
+                <!-- Section Modules -->
+                <section class="section">
+                    <h2>🎯 Sélectionnez les modules à installer</h2>
+                    <div class="modules-grid">
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleSystem" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🔄</span>
+                                <span class="module-title">Mise à jour système</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleApache" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🌐</span>
+                                <span class="module-title">Apache2</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleFirewall" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🔥</span>
+                                <span class="module-title">Pare-feu (UFW)</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleSftp" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🔐</span>
+                                <span class="module-title">SFTP</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="modulePhp" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🐘</span>
+                                <span class="module-title">PHP 8.3</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleComposer" checked>
+                            <div class="module-content">
+                                <span class="module-icon">📦</span>
+                                <span class="module-title">Composer</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="moduleMariadb" checked>
+                            <div class="module-content">
+                                <span class="module-icon">💾</span>
+                                <span class="module-title">MariaDB</span>
+                            </div>
+                        </label>
+                        
+                        <label class="module-card">
+                            <input type="checkbox" id="modulePhpmyadmin" checked>
+                            <div class="module-content">
+                                <span class="module-icon">🧰</span>
+                                <span class="module-title">phpMyAdmin</span>
+                            </div>
+                        </label>
+                    </div>
+                    
+                    <!-- Bouton de prévisualisation des modules -->
+                    <div class="preview-section">
+                        <button id="previewModulesBtn" class="btn btn-info" type="button">
+                            👁️ Prévisualiser les modules sélectionnés
+                        </button>
+                    </div>
+                </section>
+
+                <!-- Zone d'erreur validation -->
+                <div id="formError" class="form-error" role="alert" aria-live="polite"></div>
+
+                <!-- Boutons d'action -->
+                <div class="action-buttons">
+                    <button id="generateBtn" class="btn btn-primary" type="button">
+                        ⚡ Générer le script complet
+                    </button>
+                    <button id="selectAllBtn" class="btn btn-secondary" type="button">
+                        ✅ Tout sélectionner
+                    </button>
+                    <button id="deselectAllBtn" class="btn btn-secondary" type="button">
+                        ❌ Tout désélectionner
+                    </button>
+                </div>
+            </div>
+            <!-- was: </form> -->
+        </div>
+
+        <!-- Zone de résultat - REMOVED -->
+    </div>
+
+    <!-- Popup Modal -->
+    <div id="moduleModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2>📦 Modules Sélectionnés</h2>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div id="selectedModulesList"></div>
+                <div class="modal-script">
+                    <h3>🔧 Script généré pour ces modules :</h3>
+                    <pre id="moduleScriptPreview"></pre>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button id="copyModuleScriptBtn" class="btn btn-success">
+                    📋 Copier le script
+                </button>
+                <button id="downloadModuleScriptBtn" class="btn btn-success">
+                    💾 Télécharger install.sh
+                </button>
+                <button id="closeModalBtn" class="btn btn-secondary">
+                    ❌ Fermer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
