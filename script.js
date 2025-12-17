@@ -302,25 +302,47 @@ function validateBeforeGenerate(modules) {
   if (modules.mariadb || modules.phpmyadmin)
     rules.push("mysqlUser", "mysqlPass", "mysqlDb");
 
-  // dédoublonnage
   const required = [...new Set(rules)];
 
   const missing = required.filter((id) => !getValue(id));
-  if (missing.length === 0) return true;
+  if (missing.length > 0) {
+    const labels = {
+      sftpSite: "Nom du site / Projet",
+      sftpUser: "Utilisateur SFTP",
+      sftpPass: "Mot de passe SFTP",
+      sftpGroup: "Groupe SFTP",
+      mysqlUser: "Utilisateur MySQL",
+      mysqlPass: "Mot de passe MySQL",
+      mysqlDb: "Nom de la base de données",
+    };
+    const human = missing.map((id) => labels[id] || id).join(", ");
+    showValidationError(`Veuillez remplir: ${human}`, missing);
+    return false;
+  }
 
-  const labels = {
-    sftpSite: "Nom du site / Projet",
-    sftpUser: "Utilisateur SFTP",
-    sftpPass: "Mot de passe SFTP",
-    sftpGroup: "Groupe SFTP",
-    mysqlUser: "Utilisateur MySQL",
-    mysqlPass: "Mot de passe MySQL",
-    mysqlDb: "Nom de la base de données",
-  };
+  // (NEW) Minimum 8 chars for SFTP credentials when SFTP module is selected
+  if (modules.sftp) {
+    const minLenById = { sftpUser: 8, sftpPass: 8, sftpGroup: 8 };
+    const labels = {
+      sftpUser: "Utilisateur SFTP",
+      sftpPass: "Mot de passe SFTP",
+      sftpGroup: "Groupe SFTP",
+    };
 
-  const human = missing.map((id) => labels[id] || id).join(", ");
-  showValidationError(`Veuillez remplir: ${human}`, missing);
-  return false;
+    const tooShort = Object.keys(minLenById).filter(
+      (id) => getValue(id).length > 0 && getValue(id).length < minLenById[id]
+    );
+
+    if (tooShort.length > 0) {
+      const human = tooShort
+        .map((id) => `${labels[id] || id} (min. ${minLenById[id]} caractères)`)
+        .join(", ");
+      showValidationError(`Champs trop courts: ${human}`, tooShort);
+      return false;
+    }
+  }
+
+  return true;
 }
 
 // Fonction pour collecter les valeurs des variables
