@@ -37,9 +37,11 @@
 
                             <!-- NEW: optional server IP -->
                             <div class="form-group">
-                                <label for="serverIp">🖥️ IP du serveur <span class="optional">(optionnel)</span></label>
+                                <label for="serverIp">🖥️ IP du serveur <span
+                                        class="optional">(optionnel)</span></label>
                                 <input type="text" id="serverIp" value="" placeholder="Ex: 203.0.113.10">
-                                <small class="input-hint">Si vide, le script affichera &lt;IP-DU-SERVEUR&gt; dans les URLs finales</small>
+                                <small class="input-hint">Si vide, le script affichera &lt;IP-DU-SERVEUR&gt; dans les
+                                    URLs finales</small>
                             </div>
                         </div>
                     </div>
@@ -63,7 +65,8 @@
                                     <div class="form-group">
                                         <label for="sftpPass">🔑 Mot de passe SFTP</label>
                                         <div class="input-wrap">
-                                            <input type="password" id="sftpPass" value="" placeholder="Mot de passe sécurisé"
+                                            <input type="password" id="sftpPass" value=""
+                                                placeholder="Mot de passe sécurisé"
                                                 autocomplete="section-sftp new-password" minlength="8">
                                             <button type="button" class="toggle-password" data-target="sftpPass"
                                                 aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
@@ -74,7 +77,8 @@
                                     <div class="form-group">
                                         <label for="sftpGroup">👥 Groupe SFTP</label>
                                         <div class="input-wrap">
-                                            <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers" minlength="8">
+                                            <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers"
+                                                minlength="8">
                                             <span id="sftpGroupCounter" class="char-counter" aria-live="polite">0</span>
                                         </div>
                                     </div>
@@ -95,7 +99,8 @@
                                     <div class="form-group">
                                         <label for="mysqlPass">🔐 Mot de passe MySQL</label>
                                         <div class="input-wrap">
-                                            <input type="password" id="mysqlPass" value="" placeholder="Mot de passe fort"
+                                            <input type="password" id="mysqlPass" value=""
+                                                placeholder="Mot de passe fort"
                                                 autocomplete="section-mysql new-password">
                                             <button type="button" class="toggle-password" data-target="mysqlPass"
                                                 aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
@@ -186,10 +191,17 @@
                         </label>
                     </div>
 
+
                     <!-- Bouton de prévisualisation des modules -->
                     <div class="preview-section">
+                        <button id="selectAllBtn" class="btn btn-secondary" type="button">
+                            ✅ Tout sélectionner
+                        </button>
+                        <button id="deselectAllBtn" class="btn btn-secondary" type="button">
+                            ❌ Tout désélectionner
+                        </button>
                         <button id="previewModulesBtn" class="btn btn-info" type="button">
-                            👁️ Prévisualiser les modules sélectionnés
+                            Générer les modules sélectionnés
                         </button>
                     </div>
                 </section>
@@ -199,15 +211,12 @@
 
                 <!-- Boutons d'action -->
                 <div class="action-buttons">
-                    <button id="generateBtn" class="btn btn-primary" type="button">
-                        ⚡ Générer le script complet
-                    </button>
-                    <button id="selectAllBtn" class="btn btn-secondary" type="button">
-                        ✅ Tout sélectionner
-                    </button>
-                    <button id="deselectAllBtn" class="btn btn-secondary" type="button">
-                        ❌ Tout désélectionner
-                    </button>
+                    <div class="btn-group">
+                        <button id="generateBtn" class="btn btn-primary" type="button">
+                            ⚡ Générer le script complet
+                        </button>
+
+                    </div>
                     <small class="input-hint action-note">
                         Le script complet nécessite que toutes les variables SFTP et MySQL soient renseignées.
                     </small>
