@@ -52,12 +52,20 @@
                         <form id="sftpForm" class="subform" autocomplete="on" novalidate>
                             <div class="config-group">
                                 <h3 class="group-title">🔐 Configuration SFTP</h3>
+                                <div class="form-group">
+                                    <label for="sftpGroup">👥 Groupe SFTP</label>
+                                    <div class="input-wrap">
+                                        <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers"
+                                            minlength="8" maxlength="30">
+                                        <span id="sftpGroupCounter" class="char-counter" aria-live="polite">0</span>
+                                    </div>
+                                </div>
                                 <div class="form-grid">
                                     <div class="form-group">
                                         <label for="sftpUser">👤 Utilisateur SFTP</label>
                                         <div class="input-wrap">
                                             <input type="text" id="sftpUser" value="" placeholder="Ex: sftp-user-root"
-                                                autocomplete="section-sftp username" minlength="8">
+                                                autocomplete="section-sftp username" minlength="8" maxlength="30">
                                             <span id="sftpUserCounter" class="char-counter" aria-live="polite">0</span>
                                         </div>
                                     </div>
@@ -67,19 +75,10 @@
                                         <div class="input-wrap">
                                             <input type="password" id="sftpPass" value=""
                                                 placeholder="Mot de passe sécurisé"
-                                                autocomplete="section-sftp new-password" minlength="8">
+                                                autocomplete="section-sftp new-password" minlength="8" maxlength="30">
                                             <button type="button" class="toggle-password" data-target="sftpPass"
                                                 aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
                                             <span id="sftpPassCounter" class="char-counter" aria-live="polite">0</span>
-                                        </div>
-                                    </div>
-
-                                    <div class="form-group">
-                                        <label for="sftpGroup">👥 Groupe SFTP</label>
-                                        <div class="input-wrap">
-                                            <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers"
-                                                minlength="8">
-                                            <span id="sftpGroupCounter" class="char-counter" aria-live="polite">0</span>
                                         </div>
                                     </div>
                                 </div>
@@ -91,6 +90,10 @@
                             <div class="config-group">
                                 <h3 class="group-title">💾 Configuration MySQL/MariaDB</h3>
                                 <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="mysqlDb">🗄️ Nom de la base de données</label>
+                                        <input type="text" id="mysqlDb" value="" placeholder="Ex: ma_base ou mydb">
+                                    </div>
                                     <div class="form-group">
                                         <label for="mysqlUser">👤 Utilisateur MySQL</label>
                                         <input type="text" id="mysqlUser" value="" placeholder="Ex: dbuser ou admin_db"
@@ -105,10 +108,6 @@
                                             <button type="button" class="toggle-password" data-target="mysqlPass"
                                                 aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
                                         </div>
-                                    </div>
-                                    <div class="form-group">
-                                        <label for="mysqlDb">🗄️ Nom de la base de données</label>
-                                        <input type="text" id="mysqlDb" value="" placeholder="Ex: ma_base ou mydb">
                                     </div>
                                 </div>
                             </div>
@@ -169,7 +168,7 @@
                         <label class="module-card">
                             <input type="checkbox" id="moduleComposer" checked>
                             <div class="module-content">
-                                <span class="module-icon">�</span>
+                                <span class="module-icon">📦</span>
                                 <span class="module-title">Composer</span>
                             </div>
                         </label>

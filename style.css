@@ -9,6 +9,21 @@ body {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     min-height: 100vh;
     padding: 20px;
+    color: var(--text);
+}
+
+/* Theme + base improvements */
+:root {
+    --brand-start: #667eea;
+    --brand-end: #764ba2;
+    --text: #222;
+    --muted: #6c757d;
+    --bg: #ffffff;
+    --bg-soft: #f8f9fc;
+    --border-color: #e5e7eb;
+    --shadow-sm: 0 4px 12px rgba(0, 0, 0, 0.08);
+    --shadow-md: 0 10px 24px rgba(0, 0, 0, 0.12);
+    --shadow-lg: 0 16px 40px rgba(0, 0, 0, 0.18);
 }
 
 .container {
@@ -28,12 +43,12 @@ header {
 }
 
 header h1 {
-    font-size: 2.5em;
+    font-size: clamp(1.8rem, 1.2rem + 2.2vw, 2.6rem);
     margin-bottom: 10px;
 }
 
 .subtitle {
-    font-size: 1.2em;
+    font-size: clamp(1rem, 0.9rem + 0.3vw, 1.2rem);
     opacity: 0.9;
 }
 
@@ -46,13 +61,35 @@ header h1 {
 }
 
 .section {
+    background: var(--bg);
+    padding: 24px;
+    border-radius: 16px;
+    box-shadow: var(--shadow-lg);
+    border: 1px solid var(--border-color);
     margin-bottom: 40px;
+    /* keep spacing */
+    overflow: hidden;
+    /* clip children so inputs don’t bleed outside */
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+@supports (overflow: clip) {
+    .section {
+        overflow: clip;
+    }
+
+    /* modern, avoids creating a new scroll box */
+}
+
+.section:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
 }
 
 .section h2 {
     color: #667eea;
     font-size: 1.8em;
-    margin-bottom: 25px;
+    margin-bottom: 18px;
     padding-bottom: 10px;
     border-bottom: 3px solid #667eea;
 }
@@ -73,22 +110,26 @@ header h1 {
     font-weight: 600;
     transition: background 0.3s ease;
 }
+
 #resetFormBtn:hover {
     background: #c82333;
 }
+
 .config-group {
-    background: #f8f9fa;
+    background: var(--bg-soft);
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
     padding: 25px;
     border-radius: 12px;
     margin-bottom: 25px;
-    border: 2px solid #e0e0e0;
+    border-color: var(--brand-start);
     transition: all 0.3s ease;
 }
 
 .config-group.highlighted {
     background: linear-gradient(135deg, rgba(102, 126, 234, 0.05) 0%, rgba(118, 75, 162, 0.05) 100%);
-    border: 3px solid #667eea;
-    box-shadow: 0 5px 20px rgba(102, 126, 234, 0.15);
+    border-color: var(--brand-start);
+    box-shadow: var(--shadow-md);
 }
 
 .config-group:hover {
@@ -127,9 +168,10 @@ header h1 {
 }
 
 /* each field takes half if possible, otherwise wraps */
-.form-grid.general-grid > .form-group {
+.form-grid.general-grid>.form-group {
     flex: 1 1 280px;
-    min-width: 280px;
+    min-width: 0;
+    /* allow shrinking inside narrow sections */
 }
 
 .form-group {
@@ -141,14 +183,16 @@ header h1 {
     font-weight: 600;
     margin-bottom: 8px;
     color: #333;
-    font-size: 1em;
+    font-size: 0.98rem;
 }
 
 .form-group input {
     padding: 12px 15px;
     border: 2px solid #e0e0e0;
     border-radius: 8px;
-    font-size: 1em;
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+    line-height: 1.4;
+    background: #fff;
     transition: all 0.3s ease;
 }
 
@@ -167,8 +211,8 @@ header h1 {
 
 .form-group input:focus {
     outline: none;
-    border-color: #667eea;
-    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+    border-color: var(--brand-start);
+    box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.18);
 }
 
 .btn:focus-visible,
@@ -180,40 +224,39 @@ header h1 {
 
 .modules-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    gap: 15px;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 18px;
 }
 
 .preview-section {
     display: flex;
-    margin-top: 25px;
-    text-align: center;
-    padding-top: 20px;
-    border-top: 2px dashed #e0e0e0;
-    justify-content: space-evenly;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    margin-top: 24px;
+    padding-top: 16px;
+    border-top: 2px dashed var(--border-color);
     flex-wrap: wrap;
-    gap: 10px;
-    margin-top: 25px;
-    text-align: center;
-    padding-top: 20px;
-    border-top: 2px dashed #e0e0e0;
 }
 
 .module-card {
     cursor: pointer;
-    border: 2px solid #e0e0e0;
+    border: 1px solid var(--border-color);
     border-radius: 12px;
     padding: 20px;
     transition: all 0.3s ease;
-    background: #f8f9fa;
+    background: #ffffff;
     display: flex;
     align-items: center;
     user-select: none;
+    box-shadow: var(--shadow-sm);
+    position: relative;
+    /* anchor for absolute badge */
 }
 
 .module-card:hover {
     transform: translateY(-3px);
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    box-shadow: var(--shadow-md);
 }
 
 .module-card input[type="checkbox"] {
@@ -224,13 +267,26 @@ header h1 {
     color: #667eea;
 }
 
-.module-card input[type="checkbox"]:checked~.module-content .module-icon {
+/* Tighten selector: scale icon when selected */
+.module-card input[type="checkbox"]:checked+.module-content .module-icon {
     transform: scale(1.2);
 }
 
+/* Fallback (works without :has): add a badge on the content when checked */
+.module-card input[type="checkbox"]:checked+.module-content::after {
+    content: "✔";
+    position: absolute;
+    top: 10px;
+    right: 12px;
+    font-size: 0.95rem;
+    color: var(--brand-start);
+    font-weight: 800;
+}
+
 .module-card:has(input:checked) {
-    border-color: #667eea;
-    background: linear-gradient(135deg, rgba(102, 126, 234, 0.1) 0%, rgba(118, 75, 162, 0.1) 100%);
+    border-color: var(--brand-start);
+    background: linear-gradient(135deg, rgba(102, 126, 234, 0.06) 0%, rgba(118, 75, 162, 0.06) 100%);
+    box-shadow: var(--shadow-md);
 }
 
 .module-content {
@@ -264,7 +320,7 @@ header h1 {
     padding: 15px 30px;
     border: none;
     border-radius: 10px;
-    font-size: 1.1em;
+    font-size: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -274,26 +330,29 @@ header h1 {
 .btn:hover {
     transform: translateY(-2px);
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+    filter: brightness(1.02);
 }
 
 .btn-primary {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
     color: white;
+    box-shadow: var(--shadow-sm);
 }
 
 .btn-secondary {
-    background: #6c757d;
+    background: #495057;
     color: white;
 }
 
 .btn-success {
-    background: #28a745;
+    background: #198754;
     color: white;
 }
 
+/* Buttons: add missing info variant */
 .btn-info {
     background: linear-gradient(135deg, #36d1dc 0%, #5b86e5 100%);
-    color: white;
+    color: #fff;
 }
 
 /* Modal Styles */
@@ -330,7 +389,7 @@ header h1 {
     background-color: white;
     margin: 20px;
     border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+    box-shadow: var(--shadow-lg);
     width: 90%;
     max-width: 900px;
     max-height: 90vh;
@@ -428,6 +487,7 @@ header h1 {
     line-height: 1.6;
     max-height: 400px;
     overflow-y: auto;
+    border: 1px solid #1f2937;
 }
 
 .modal-footer {
@@ -446,8 +506,8 @@ header h1 {
     margin-bottom: 20px;
     padding: 12px 14px;
     border-radius: 10px;
-    border: 2px solid rgba(220, 53, 69, 0.35);
-    background: rgba(220, 53, 69, 0.08);
+    border: 2px solid rgba(220, 53, 69, 0.5);
+    background: rgba(220, 53, 69, 0.12);
     color: #b02a37;
     font-weight: 600;
 }
@@ -545,6 +605,73 @@ header h1 {
     }
 }
 
+@media (max-width: 640px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .modules-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section {
+        padding: 18px;
+    }
+}
+
+/* Stronger, clearer card look + clip inner overflow (focus rings, badges) */
+.section {
+    /* ...existing code... */
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    /* clip children so inputs don’t bleed outside */
+    transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+@supports (overflow: clip) {
+    .section {
+        overflow: clip;
+    }
+
+    /* modern, avoids creating a new scroll box */
+}
+
+.section:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.16);
+}
+
+/* Prevent horizontal overflow in the flex-based general grid */
+.form-grid.general-grid>.form-group {
+    /* was: flex: 1 1 280px; min-width: 280px; */
+    flex: 1 1 280px;
+    min-width: 0;
+    /* allow shrinking inside narrow sections */
+}
+
+/* Make sure inputs never exceed the parent width */
+.form-group,
+.input-wrap,
+.form-group input {
+    max-width: 100%;
+}
+
+/* On small screens, force full-width stacking to avoid overflow */
+@media (max-width: 640px) {
+    .form-grid.general-grid>.form-group {
+        flex-basis: 100%;
+    }
+}
+
+/* Motion safety */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation: none !important;
+        transition: none !important;
+        scroll-behavior: auto !important;
+    }
+}
+
 .input-wrap {
     position: relative;
 }
@@ -552,6 +679,7 @@ header h1 {
 .input-wrap input {
     padding-right: 110px;
     /* place for counter + eye (safe) */
+    background: #fff;
 }
 
 .char-counter {
@@ -565,6 +693,7 @@ header h1 {
     color: #dc3545;
     /* default: too short */
     pointer-events: none;
+    text-shadow: 0 1px 0 #fff;
 }
 
 .char-counter.ok {
@@ -588,6 +717,7 @@ header h1 {
 
 .toggle-password:hover {
     background: rgba(0, 0, 0, 0.06);
+    outline: 2px solid rgba(0, 0, 0, 0.08);
 }
 
 .optional {
