@@ -431,8 +431,9 @@ echo "👤 Utilisateur SFTP: ${vars.SFTP_USER}"`;
 
 // Afficher le résultat
 function displayScript() {
-  const selected = getSelectedModules();
-  if (!validateBeforeGenerate(selected)) return;
+  // Script complet = tous les modules => toutes les variables doivent être remplies
+  const all = getAllModules();
+  if (!validateBeforeGenerate(all)) return;
 
   const script = generateScript({ forceAllModules: true });
   showScriptInModal(script, true);
@@ -590,4 +591,49 @@ document.addEventListener("DOMContentLoaded", () => {
     "mysqlDb",
   ];
   for (const id of watched) on($id(id), "input", clearValidationUI);
+
+  // Counters (SFTP only)
+  setupCharCounter("sftpUser", "sftpUserCounter", 8);
+  setupCharCounter("sftpPass", "sftpPassCounter", 8);
+  setupCharCounter("sftpGroup", "sftpGroupCounter", 8);
+
+  // Eye toggles (all password inputs)
+  setupPasswordToggles();
 });
+
+// NEW: "Script complet" => tous les modules activés
+function getAllModules() {
+  return Object.keys(scriptModules).reduce((acc, k) => ((acc[k] = true), acc), {});
+}
+
+function setupCharCounter(inputId, counterId, minLen = 0) {
+  const input = $id(inputId);
+  const counter = $id(counterId);
+  if (!input || !counter) return;
+
+  const update = () => {
+    const len = (input.value || "").length;
+    counter.textContent = String(len);
+    counter.classList.toggle("ok", minLen > 0 ? len >= minLen : len > 0);
+  };
+
+  on(input, "input", update);
+  update();
+}
+
+function setupPasswordToggles() {
+  document.querySelectorAll(".toggle-password").forEach((btn) => {
+    on(btn, "click", () => {
+      const targetId = btn.getAttribute("data-target");
+      const input = targetId ? $id(targetId) : null;
+      if (!input) return;
+
+      const isHidden = input.type === "password";
+      input.type = isHidden ? "text" : "password";
+
+      btn.textContent = isHidden ? "🙈" : "👁️";
+      btn.setAttribute("aria-pressed", isHidden ? "true" : "false");
+      btn.setAttribute("aria-label", isHidden ? "Masquer le mot de passe" : "Afficher le mot de passe");
+    });
+  });
+}

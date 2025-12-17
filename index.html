@@ -36,51 +36,71 @@
                         </div>
                     </div>
 
-                    <!-- Groupe SFTP (sub-form to avoid "multiple credential sets in one form") -->
-                    <form id="sftpForm" class="subform" autocomplete="on" novalidate>
-                        <div class="config-group">
-                            <h3 class="group-title">🔐 Configuration SFTP</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="sftpUser">👤 Utilisateur SFTP</label>
-                                    <input type="text" id="sftpUser" value="" placeholder="Ex: sftp-user-root"
-                                        autocomplete="section-sftp username" minlength="8">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sftpPass">🔑 Mot de passe SFTP</label>
-                                    <input type="password" id="sftpPass" value="" placeholder="Mot de passe sécurisé"
-                                        autocomplete="section-sftp new-password" minlength="8">
-                                </div>
-                                <div class="form-group">
-                                    <label for="sftpGroup">👥 Groupe SFTP</label>
-                                    <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers" minlength="8">
-                                </div>
-                            </div>
-                        </div>
-                    </form>
+                    <!-- NEW: wrapper 2 colonnes -->
+                    <div class="config-two-col">
+                        <!-- Groupe SFTP (sub-form to avoid "multiple credential sets in one form") -->
+                        <form id="sftpForm" class="subform" autocomplete="on" novalidate>
+                            <div class="config-group">
+                                <h3 class="group-title">🔐 Configuration SFTP</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="sftpUser">👤 Utilisateur SFTP</label>
+                                        <div class="input-wrap">
+                                            <input type="text" id="sftpUser" value="" placeholder="Ex: sftp-user-root"
+                                                autocomplete="section-sftp username" minlength="8">
+                                            <span id="sftpUserCounter" class="char-counter" aria-live="polite">0</span>
+                                        </div>
+                                    </div>
 
-                    <!-- Groupe MySQL (sub-form) -->
-                    <form id="mysqlForm" class="subform" autocomplete="on" novalidate>
-                        <div class="config-group">
-                            <h3 class="group-title">💾 Configuration MySQL/MariaDB</h3>
-                            <div class="form-grid">
-                                <div class="form-group">
-                                    <label for="mysqlUser">👤 Utilisateur MySQL</label>
-                                    <input type="text" id="mysqlUser" value="" placeholder="Ex: dbuser ou admin_db"
-                                        autocomplete="section-mysql username">
-                                </div>
-                                <div class="form-group">
-                                    <label for="mysqlPass">🔐 Mot de passe MySQL</label>
-                                    <input type="password" id="mysqlPass" value="" placeholder="Mot de passe fort"
-                                        autocomplete="section-mysql new-password">
-                                </div>
-                                <div class="form-group">
-                                    <label for="mysqlDb">🗄️ Nom de la base de données</label>
-                                    <input type="text" id="mysqlDb" value="" placeholder="Ex: ma_base ou mydb">
+                                    <div class="form-group">
+                                        <label for="sftpPass">🔑 Mot de passe SFTP</label>
+                                        <div class="input-wrap">
+                                            <input type="password" id="sftpPass" value="" placeholder="Mot de passe sécurisé"
+                                                autocomplete="section-sftp new-password" minlength="8">
+                                            <button type="button" class="toggle-password" data-target="sftpPass"
+                                                aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
+                                            <span id="sftpPassCounter" class="char-counter" aria-live="polite">0</span>
+                                        </div>
+                                    </div>
+
+                                    <div class="form-group">
+                                        <label for="sftpGroup">👥 Groupe SFTP</label>
+                                        <div class="input-wrap">
+                                            <input type="text" id="sftpGroup" value="" placeholder="Ex: sftpusers" minlength="8">
+                                            <span id="sftpGroupCounter" class="char-counter" aria-live="polite">0</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    </form>
+                        </form>
+
+                        <!-- Groupe MySQL (sub-form) -->
+                        <form id="mysqlForm" class="subform" autocomplete="on" novalidate>
+                            <div class="config-group">
+                                <h3 class="group-title">💾 Configuration MySQL/MariaDB</h3>
+                                <div class="form-grid">
+                                    <div class="form-group">
+                                        <label for="mysqlUser">👤 Utilisateur MySQL</label>
+                                        <input type="text" id="mysqlUser" value="" placeholder="Ex: dbuser ou admin_db"
+                                            autocomplete="section-mysql username">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mysqlPass">🔐 Mot de passe MySQL</label>
+                                        <div class="input-wrap">
+                                            <input type="password" id="mysqlPass" value="" placeholder="Mot de passe fort"
+                                                autocomplete="section-mysql new-password">
+                                            <button type="button" class="toggle-password" data-target="mysqlPass"
+                                                aria-label="Afficher le mot de passe" aria-pressed="false">👁️</button>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="mysqlDb">🗄️ Nom de la base de données</label>
+                                        <input type="text" id="mysqlDb" value="" placeholder="Ex: ma_base ou mydb">
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
                 </section>
 
                 <!-- Section Modules -->
@@ -174,6 +194,9 @@
                     <button id="deselectAllBtn" class="btn btn-secondary" type="button">
                         ❌ Tout désélectionner
                     </button>
+                    <small class="input-hint action-note">
+                        Le script complet nécessite que toutes les variables SFTP et MySQL soient renseignées.
+                    </small>
                 </div>
             </div>
             <!-- was: </form> -->

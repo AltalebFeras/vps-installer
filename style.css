@@ -423,6 +423,30 @@ header h1 {
     display: block;
 }
 
+.config-two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 25px;
+    align-items: start;
+}
+
+/* évite le double "margin-bottom" quand côte à côte */
+.config-two-col .config-group {
+    margin-bottom: 0;
+}
+
+/* responsive: repasse en colonne */
+@media (max-width: 900px) {
+    .config-two-col {
+        grid-template-columns: 1fr;
+    }
+
+    /* on remet une marge verticale normale quand empilé */
+    .config-two-col .config-group {
+        margin-bottom: 25px;
+    }
+}
+
 @media (max-width: 768px) {
     header h1 {
         font-size: 1.8em;
@@ -476,4 +500,49 @@ header h1 {
     .modal-footer .btn {
         width: 100%;
     }
+}
+
+.input-wrap {
+    position: relative;
+}
+
+.input-wrap input {
+    padding-right: 110px;
+    /* place for counter + eye (safe) */
+}
+
+.char-counter {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Courier New', monospace;
+    font-weight: 700;
+    font-size: 0.9em;
+    color: #dc3545;
+    /* default: too short */
+    pointer-events: none;
+}
+
+.char-counter.ok {
+    color: #28a745;
+}
+
+.toggle-password {
+    position: absolute;
+    right: 48px;
+    /* leaves room for counter at far right */
+    top: 50%;
+    transform: translateY(-50%);
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    font-size: 1.1em;
+    line-height: 1;
+    padding: 6px 8px;
+    border-radius: 8px;
+}
+
+.toggle-password:hover {
+    background: rgba(0, 0, 0, 0.06);
 }
