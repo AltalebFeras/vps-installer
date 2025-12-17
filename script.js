@@ -87,6 +87,45 @@ function deselectAll() {
   setAllModules(false);
 }
 
+// NEW: Reset form (inputs + modules + UI)
+function resetForm() {
+  // close modal if open + clear errors
+  closeModal();
+  clearValidationUI();
+
+  const fields = [
+    "sftpSite",
+    "serverIp",
+    "sftpUser",
+    "sftpPass",
+    "sftpGroup",
+    "mysqlUser",
+    "mysqlPass",
+    "mysqlDb",
+  ];
+
+  for (const id of fields) {
+    const el = $id(id);
+    if (!el) continue;
+    el.value = "";
+    el.dispatchEvent(new Event("input", { bubbles: true }));
+  }
+
+  // reset password visibility to hidden + reset buttons state
+  for (const id of ["sftpPass", "mysqlPass"]) {
+    const el = $id(id);
+    if (el) el.type = "password";
+  }
+  document.querySelectorAll(".toggle-password").forEach((btn) => {
+    btn.textContent = "👁️";
+    btn.setAttribute("aria-pressed", "false");
+    btn.setAttribute("aria-label", "Afficher le mot de passe");
+  });
+
+  // default: all modules checked
+  setAllModules(true);
+}
+
 // (FIX) closeModal was missing => ReferenceError in DOMContentLoaded handlers
 function closeModal() {
   $id("moduleModal")?.classList.remove("show");
@@ -203,6 +242,10 @@ function generateScript(options = {}) {
 
   const vars = getVariables();
 
+  // NEW: compute final host for URLs (embed directly in generated script)
+  const serverIp = (vars.SERVER_IP || "").trim();
+  const urlHost = serverIp ? serverIp.replace(/["`$\\]/g, "") : "<IP-DU-SERVEUR>";
+
   // En-tête du script
   let script = `#!/bin/bash
 set -e
@@ -243,16 +286,16 @@ systemctl restart apache2
 `;
   }
 
-  // Pied de page
+  // Pied de page (CHANGED: embed urlHost instead of ${SERVER_IP:-...})
   script += `
 ##############################################
 echo "=== 🎉 INSTALLATION TERMINÉE ! ==="
 ##############################################
-echo "🌍 Site Web: http://\${SERVER_IP:-<IP-DU-SERVEUR>}/"`;
+echo "🌍 Site Web: http://${urlHost}/"`;
 
   if (modules.phpmyadmin) {
     script += `
-echo "🛢 phpMyAdmin: http://\${SERVER_IP:-<IP-DU-SERVEUR>}/phpmyadmin/"`;
+echo "🛢 phpMyAdmin: http://${urlHost}/phpmyadmin/"`;
   }
 
   if (modules.sftp) {
@@ -412,6 +455,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   on($id("generateBtn"), "click", displayScript);
   on($id("selectAllBtn"), "click", selectAll);
   on($id("deselectAllBtn"), "click", deselectAll);
+  on($id("resetFormBtn"), "click", resetForm);
 
   // Modal
   on($id("previewModulesBtn"), "click", previewModules);
