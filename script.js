@@ -236,6 +236,44 @@ function getVariables() {
   };
 }
 
+function bashDoubleQuoteEscape(value) {
+  return String(value)
+    .replace(/\\/g, "\\\\")
+    .replace(/"/g, '\\"')
+    .replace(/\$/g, "\\$")
+    .replace(/`/g, "\\`");
+}
+
+function buildConfigBlock(vars) {
+  const orderedKeys = [
+    "SERVER_IP",
+    "SFTP_USER",
+    "SFTP_PASS",
+    "SFTP_GROUP",
+    "SFTP_SITE",
+    "MYSQL_USER",
+    "MYSQL_PASS",
+    "MYSQL_DB",
+    "PROJECT_ROOT",
+  ];
+
+  const lines = [];
+  for (const key of orderedKeys) {
+    const raw = (vars[key] ?? "").toString().trim();
+    if (!raw) continue;
+    lines.push(`${key}="${bashDoubleQuoteEscape(raw)}"`);
+  }
+
+  if (lines.length === 0) return "";
+
+  return `
+##############################################
+# 🔧 VARIABLES DE CONFIGURATION
+##############################################
+${lines.join("\n")}
+`;
+}
+
 // Fonction pour générer le script (option: forcer tous les modules)
 function generateScript(options = {}) {
   if (!ensureModulesLoaded()) return "";
@@ -246,23 +284,12 @@ function generateScript(options = {}) {
   const serverIp = (vars.SERVER_IP || "").trim();
   const urlHost = serverIp ? serverIp.replace(/["`$\\]/g, "") : "<IP-DU-SERVEUR>";
 
-  // En-tête du script
+  // En-tête du script (CHANGED: only include config block if something is filled)
   let script = `#!/bin/bash
 set -e
-
-##############################################
-# 🔧 VARIABLES DE CONFIGURATION
-##############################################
-SERVER_IP="${vars.SERVER_IP}"
-SFTP_USER="${vars.SFTP_USER}"
-SFTP_PASS="${vars.SFTP_PASS}"
-SFTP_GROUP="${vars.SFTP_GROUP}"
-SFTP_SITE="${vars.SFTP_SITE}"
-MYSQL_USER="${vars.MYSQL_USER}"
-MYSQL_PASS="${vars.MYSQL_PASS}"
-MYSQL_DB="${vars.MYSQL_DB}"
-PROJECT_ROOT="${vars.PROJECT_ROOT}"
 `;
+
+  script += buildConfigBlock(vars);
 
   // Vérifier quels modules sont sélectionnés (ou forcer tous)
   const modules = options.forceAllModules
