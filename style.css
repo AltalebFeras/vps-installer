@@ -530,23 +530,26 @@ header h1 {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 25px;
-    align-items: start;
+    align-items: stretch; /* was: start — stretch items so both columns match the tallest */
 }
 
 /* évite le double "margin-bottom" quand côte à côte */
 .config-two-col .config-group {
     margin-bottom: 0;
+    height: 100%; /* ensure the card fills the stretched grid track */
 }
 
 /* responsive: repasse en colonne */
 @media (max-width: 900px) {
     .config-two-col {
         grid-template-columns: 1fr;
+        /* align-items can remain stretch on single column without issues */
     }
 
     /* on remet une marge verticale normale quand empilé */
     .config-two-col .config-group {
         margin-bottom: 25px;
+        height: auto; /* natural height when stacked */
     }
 }
 
