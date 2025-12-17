@@ -546,3 +546,9 @@ header h1 {
 .toggle-password:hover {
     background: rgba(0, 0, 0, 0.06);
 }
+
+.optional {
+    font-weight: 600;
+    font-size: 0.9em;
+    color: #6c757d;
+}

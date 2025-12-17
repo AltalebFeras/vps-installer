@@ -33,6 +33,13 @@
                                 <input type="text" id="sftpSite" value="" placeholder="Ex: monsite, myblog, project">
                                 <small class="input-hint">Ce nom sera utilisé pour créer les dossiers du projet</small>
                             </div>
+
+                            <!-- NEW: optional server IP -->
+                            <div class="form-group">
+                                <label for="serverIp">🖥️ IP du serveur <span class="optional">(optionnel)</span></label>
+                                <input type="text" id="serverIp" value="" placeholder="Ex: 203.0.113.10">
+                                <small class="input-hint">Si vide, le script affichera &lt;IP-DU-SERVEUR&gt; dans les URLs finales</small>
+                            </div>
                         </div>
                     </div>
 
@@ -150,7 +157,7 @@
                         <label class="module-card">
                             <input type="checkbox" id="moduleComposer" checked>
                             <div class="module-content">
-                                <span class="module-icon">📦</span>
+                                <span class="module-icon">�</span>
                                 <span class="module-title">Composer</span>
                             </div>
                         </label>

@@ -128,9 +128,12 @@ function validateBeforeGenerate(modules) {
 
   const rules = [];
   if (modules.sftp) rules.push("sftpSite", "sftpUser", "sftpPass", "sftpGroup");
-  if (modules.apache) rules.push("sftpSite", "sftpUser");
-  if (modules.mariadb || modules.phpmyadmin)
-    rules.push("mysqlUser", "mysqlPass", "mysqlDb");
+
+  // CHANGE: Apache should not require project/site or SFTP user anymore
+  // if (modules.apache) rules.push("sftpSite", "sftpUser");
+
+  // CHANGE: phpMyAdmin should not require MySQL credentials anymore
+  if (modules.mariadb) rules.push("mysqlUser", "mysqlPass", "mysqlDb");
 
   const required = [...new Set(rules)];
 
@@ -181,6 +184,7 @@ function getVariables() {
   const sftpSite = getValue("sftpSite");
 
   return {
+    SERVER_IP: getValue("serverIp"),
     SFTP_USER: sftpUser,
     SFTP_PASS: getValue("sftpPass"),
     SFTP_GROUP: getValue("sftpGroup"),
@@ -206,6 +210,7 @@ set -e
 ##############################################
 # 🔧 VARIABLES DE CONFIGURATION
 ##############################################
+SERVER_IP="${vars.SERVER_IP}"
 SFTP_USER="${vars.SFTP_USER}"
 SFTP_PASS="${vars.SFTP_PASS}"
 SFTP_GROUP="${vars.SFTP_GROUP}"
@@ -243,11 +248,11 @@ systemctl restart apache2
 ##############################################
 echo "=== 🎉 INSTALLATION TERMINÉE ! ==="
 ##############################################
-echo "🌍 Site Web: http://<IP-DU-SERVEUR>/"`;
+echo "🌍 Site Web: http://\${SERVER_IP:-<IP-DU-SERVEUR>}/"`;
 
   if (modules.phpmyadmin) {
     script += `
-echo "🛢 phpMyAdmin: http://<IP-DU-SERVEUR>/phpmyadmin/"`;
+echo "🛢 phpMyAdmin: http://\${SERVER_IP:-<IP-DU-SERVEUR>}/phpmyadmin/"`;
   }
 
   if (modules.sftp) {
@@ -428,6 +433,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     "mysqlUser",
     "mysqlPass",
     "mysqlDb",
+    "serverIp", // NEW (optional, but clears any displayed error state consistently)
   ];
   for (const id of watched) on($id(id), "input", clearValidationUI);
 
